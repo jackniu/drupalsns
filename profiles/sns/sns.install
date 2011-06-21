@@ -78,6 +78,6 @@ function standard_install() {
   db_update('system')
     ->fields(array('status' => 1))
     ->condition('type' => 'theme')
-    ->condition('name', 'msh');
-  $default_theme = variable_get('theme_default', 'msh');
+    ->condition('name', 'sns');
+  $default_theme = variable_get('theme_default', 'sns');
 }
