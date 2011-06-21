@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ */
+function sns_install() {
+   // Performance standard action first.
+  standard_install();
+}
+
+/**
+ * Standard install works.
+ */
+function standard_install() {
+  include_once DRUPAL_ROOT . '/profiles/minimal/minimal.install';
+  minimal_install();
+  
+  // User can not register.
+  variable_set('user_register', USER_REGISTER_ADMINISTRATORS_ONLY);
+  // Disable user picture.
+  variable_set('user_pictures', '0');
+  
+  // Add text filter format. We only want to have full html text format.
+  $full_html_format = array(
+    'format' => 'full_html',
+    'name' => 'Full HTML',
+    'weight' => 1,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+    ),
+  );
+  $full_html_format = (object) $full_html_format;
+  filter_format_save($full_html_format);
+  
+  // Add permissions.
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content'));
+  
+  // Create a default role for site administrators, with all available permissions assigned.
+  $admin_role = new stdClass();
+  $admin_role->name = 'administrator';
+  $admin_role->weight = 2;
+  user_role_save($admin_role);
+  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
+  // Set this as the administrator role.
+  variable_set('user_admin_role', $admin_role->rid);
+
+  // Assign user 1 the "administrator" role.
+  db_insert('users_roles')
+    ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
+    ->execute();
+    
+  // Enable the admin theme.
+  db_update('system')
+    ->fields(array('status' => 1))
+    ->condition('type', 'theme')
+    ->condition('name', 'rubik')
+    ->execute();
+  variable_set('admin_theme', 'rubik');
+  variable_set('node_admin_theme', '1');
+  
+  // Enable deafult theme.
+  db_update('system')
+    ->fields(array('status' => 1))
+    ->condition('type' => 'theme')
+    ->condition('name', 'msh');
+  $default_theme = variable_get('theme_default', 'msh');
+}

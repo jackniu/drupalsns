@@ -1,0 +1,24 @@
+name = Drupal SNS
+description = Install profile for Drupalsns
+version = 1.0.beta
+core = 7.x
+
+; Drupal core
+dependencies[] = block
+dependencies[] = image
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = dblog
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = toolbar
+dependencies[] = overlay
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = rdf
+files[] = sns.profile
+
+
