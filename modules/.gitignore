@@ -1,5 +1,8 @@
 
 ;contrib mdoules
-*
+.*
+/*
+
+
 !.gitignore
-!sns/
+!/sns

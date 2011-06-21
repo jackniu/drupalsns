@@ -1,0 +1,23 @@
+core = 7.x
+description = Drupalsns default theme.
+engine = phptemplate
+name = Sns
+
+; Regions =====================================================================
+
+regions[sidebar_first] = Sidebar first
+regions[sidebar_second] = Sidebar second
+regions[content] = Content
+regions[header] = Header
+regions[help] = Help
+regions[footer] = Footer
+regions[page_top] = Page top
+regions[page_bottom] = Page bottom
+regions[highlighted] = Highlighted
+
+; Stylesheets =================================================================
+
+stylesheets[all][] = reset.css
+stylesheets[all][] = base.css
+stylesheets[screen][] = drupal.css
+
